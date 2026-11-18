@@ -1,0 +1,32 @@
+name: Checkov IaC Security Gate
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  checkov:
+    name: checkov-gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Checkov
+        run: pip install checkov==3.4.5
+
+      - name: Full scan report (non-blocking)
+        run: checkov -d terraform --compact --soft-fail
+
+      - name: Security gate (blocks on critical and high risks)
+        run: |
+          checkov -d terraform --compact \
+            --check CKV_AZURE_9,CKV_AZURE_10,CKV_AZURE_59,CKV_AZURE_190,CKV2_AZURE_47,CKV_AZURE_34,CKV_AZURE_3,CKV_AZURE_44,CKV_AZURE_1,CKV_AZURE_149,CKV_AZURE_178,CKV_AZURE_119
