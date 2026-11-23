@@ -1,5 +1,4 @@
-variable "admin_password" {
+variable "ssh_public_key" {
   type        = string
-  sensitive   = true
-  description = "VM admin password (never commit a real value)"
+  description = "SSH public key for the VM admin user"
 }
