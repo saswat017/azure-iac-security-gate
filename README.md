@@ -29,6 +29,7 @@ fail: merge blocked.
 - Checkov is pinned to 3.4.5 so results are reproducible.
 - `main` is protected by a ruleset: a PR is required and `checkov-gate` must pass. The bypass list is
   empty, so the rule applies to the repo owner too.
+- Full scan results are uploaded as SARIF to GitHub's Security tab.
 
 ## Demo: fail, fix, pass
 
@@ -41,6 +42,12 @@ to `*`, TLS 1.0, password login and a public IP. The check fails and the merge b
 enforcing TLS 1.2 and HTTPS, using SSH keys and dropping the public IP, the same PR turns green.
 
 ![Passed merge](docs/screenshots/passed-merge.png)
+
+**3. All findings land in GitHub's Security tab.** The non-blocking full scan is uploaded as SARIF, so
+every finding, including the medium and low ones the gate does not enforce, appears under
+Security → Code scanning.
+
+![Security tab findings](docs/screenshots/security-tab-findings.png)
 
 ## Findings and risk
 
